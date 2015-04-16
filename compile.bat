@@ -1,0 +1,1 @@
+pandoc -t dzslides --template template.html -s slides.md -o slides.html
