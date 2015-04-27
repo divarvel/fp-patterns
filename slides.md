@@ -1,6 +1,6 @@
-% Tips and Tricks for Clean RDB Schemas
+% Functional patterns for Scala <span class="red">beginners</span>
 % Clément Delafargue
-% MixIT 2015-04-16
+% flatMap(Oslo) 2015-04-28
 
 # I'm online!
 
@@ -35,762 +35,523 @@
 
 -------------------------------------------
 
-<p style="font-size: 2.2em; width: 50%; float: left;">
-Mongo<br>
-Riak<br>
-Riak2<br>
-Redis<br>
-Couchbase<br>
-CouchDB<br>
-ElasticSearch
-</p>
-<p style="font-size: 2.2em;">
-Titan<br>
-Cassandra<br>
-Kafka<br>
-Hbase<br>
-Neo4J<br>
-Datomic<br>
-</p>
-
-
-<details>
-I've played with lots of NoSQL dbs over the years
-</details>
-
--------------------------------------------
-
-<p style="text-align:center">
-<br><br>
-<span style="font-size: 4em;">Postgres</span>
-</p>
-
-<details>
-  But most of my work is done with postgres nowadays
-</details>
-
--------------------------------------------
-
-## Why bother with SQL?
-
-<details>
-  Too complex, not flexible enough
-</details>
-
--------------------------------------------
-
-<p style="text-align:center">
-<br><br>
-<span style="font-size: 4em;">relational <span class="red">algebra</span></span>
-</p>
-
-<details>
-  Very well defined mathematical foundations. Clear, rigorous design
-</details>
-
--------------------------------------------
-
-<p style="text-align:center">
-<br><br>
-<span style="font-size: 4em;">relational <span class="red">thinking</span></span>
-</p>
-
-<details>
-  Very natural way to think
-</details>
-
--------------------------------------------
-
-<p style="text-align:center">
-<br><br>
-<span style="font-size: 3em;">Data consistency</span>
-</p>
-
-<details>
-  Strong guarantees regarding the validity and the consistency of stored data
-</details>
-
--------------------------------------------
-
-# Exploratory queries
-
-<video src="http://clementd-files.cellar-c1.clvrcld.net/lol/where-are-you.webm" loop></video>
-
-<details>
-  Very easy to mix and match data. Data can be used in unforeseen ways due to good composability
-</details>
-
-
--------------------------------------------
-
-# Reliance on the data model
-
-<video src="http://clementd-files.cellar-c1.clvrcld.net/lol/trust-fall.webm" loop></video>
-
-<details>
-  All of this works only if you have a properly designed schema
-</details>
-
--------------------------------------------
- 
-# Pay attention to your schema
-![](assets/schema.jpg)
-
-<details>
-  using a RDBMS without paying attention to the db schema is foolish. If you want an unstructured object dump,
-  use document / graph stores
-</details>
-
-------------------------------------------
-
-## Write your schema <span class="red">yourself</span>
-
-<details>
-  Your apps and your DB are 2 separate bricks, with an untyped boundary. Acknowledge this, don't try to hide it.
-</details>
-
-# Don't let a <span class="red">program</span> design your schema 
-
-<video src="http://clementd-files.cellar-c1.clvrcld.net/lol/robot-door.webm" loop></video>
-
-<details>
-  The DB schema is central to your architecture. Handle it yourself
-</details>
-
-# Avoid ORMs
-
-<video src="http://clementd-files.cellar-c1.clvrcld.net/lol/rube-goldberg.webm" loop></video>
-
-<details>
-  ORMs may be useful in certain, very specific cases, often related to operational concerns,
-  not design-related. When it's design related, maybe a document store would be better.
-</details>
-
-
-# DB-agnosticism
-
-<video src="http://clementd-files.cellar-c1.clvrcld.net/lol/trap.webm" loop></video>
-
-<details>
-  If you're not using db-specific features, you may not need a rdbms at all
-</details>
-
-
-# Use postgreSQL
-
-<video src="http://clementd-files.cellar-c1.clvrcld.net/lol/elephant-jump.webm" loop></video>
-
-<details>
-  If you want to use open source stuff
-</details>
-
-
--------------------------------------------
-
-<video src="assets/video.mov" loop></video>
-
--------------------------------------------
-
-# Avoid ORMs
-<video src="http://clementd-files.cellar-c1.clvrcld.net/lol/rube-goldberg.webm" loop></video>
-
--------------------------------------------
-
-## But <span class="red">please</span> use data mapping libraries
-
-# POMM
-
-<div style="margin-top: 200px">
-```php
-$where =
-\Pomm\Query\Where::create(
-  'birth_date >= $*',
-  [ new \DateTime('1994-01-01') ])
-->andWhere('gender = $*', ['M']);
-
-$students =
-  $student_model
-  ->findWhere($where);
+```haskell
+zygoHistoPrepro 
+  :: (Unfoldable t, Foldable t) 
+  => (Base t b -> b) 
+  -> (forall c. Base t c -> Base t c) 
+  -> (Base t (EnvT b (Stream (Base t)) a) -> a) 
+  -> t
+  -> a
+zygoHistoPrepro f g t =
+  gprepro (distZygoT f distHisto) g t
+-- unless you want
+-- a generalized zygomorphism.
 ```
-</div>  
 
-# Anorm 
+<details>
+I won't talk about high level abstractions
+but bases used to build upon
+</details>
 
-<div style="margin-top: 200px">
-```scala
-  SQL("""select student.student_id,
-           student.name,
-           student.birth_date""")
-    .as((
-      get[UUID]("student_id") ~
-      str("name") ~
-      get[DateTime]("birth_date")
-    )).*)
+-------------------------------------------
+
+<video src="/home/clement/Images/lol/how-we-do.webm" loop></video>
+
+<details>
+Just examples, YMMV. Read code, find your own style.
+You can go a lot farther than what I'll show, use more generic coding style.
+`bête et méchant`
+</details>
+
+-------------------------------------------
+
+# Object / FP
+
+<video src="/home/clement/Images/lol/taylor-cat.webm" loop></video>
+
+<details>
+OO has plenty of beginner-oriented litterature. FP patterns in scala is a bit
+less documented. It's often ported from haskell / other fp-centric languages
+without ceremony.
+</details>
+
+-------------------------------------------
+
+## Object / FP
+
+<details>
+I'll focus on patterns common in the FP world (not intrinsically FP, though).
+Object-orientation will play a part, but more as implementation details than
+design
+</details>
+
+-------------------------------------------
+
+# What is FP?
+
+<video src="/home/clement/Images/lol/mlp-what-is-love.webm" loop></video>
+
+<details>
+Many definitions
+</details>
+
+-------------------------------------------
+
+## Programming with values
+
+<details>
+The control flow is data dependency
+</details>
+
+-------------------------------------------
+
+## Typed FP
+
+<details>
+Since all the flow is data, you can get the type system to check your control
+flow. Which is a good thing
+</details>
+
+-------------------------------------------
+
+## Algebraic design
+
+-------------------------------------------
+
+## How do we model data?
+
+-------------------------------------------
+
+## Algebraic data types
+
+-------------------------------------------
+
+## Sum / Product
+
+-------------------------------------------
+
+## Product
+
+<details>
+Tuples, case classes
+Cartesian product
+</details>
+
+-------------------------------------------
+
+## Sum
+
+<details>
+Disjointed union
+Closed
+</details>
+
+-------------------------------------------
+
+# In Haskell
+
+```haskell
+data JsonElem = JsonNull
+              | JsonBoolean Bool
+              | JsonString String
+              | JsonNumber Double
+              | JsonArray [JsonElem]
+              | JsonObject (Map String JsonElem)
 ```
-</div>
 
-# Anorm ( + PG entities)
+-------------------------------------------
+
+## In Scala?
+
+<details>
+No direct syntactic support for disjoint unions, sealed
+trait
+</details>
+
+-------------------------------------------
 
 ```scala
-  SQL(selectSQL[Student])
-    .as(parser[Student].*)
+sealed trait JsonElem
+
+case object JsonNull
+  extends JsonElem
+case class  JsonBoolean(v: Boolean)
+  extends JsonElem
+case class  JsonString(v: String)
+  extends JsonElem
+case class  JsonNumber(v: Double)
+  extends JsonElem
+case class  JsonArray(v: Seq[JsonElem])
+  extends JsonElem
+case class  JsonObject(v: Map[String, JsonElem])
+  extends JsonElem
+```
+
+
+-------------------------------------------
+
+```scala
+sealed trait JsonValue
+sealed trait JsonElem
+
+case object JsonNull extends JsonElem
+case class  JsonBoolean(v: Boolean) extends JsonElem
+case class  JsonString(v: String) extends JsonElem
+case class  JsonNumber(v: Double) extends JsonElem
 ```
 
 -------------------------------------------
 
-## (I wrote it)
+```scala
+case class  JsonArray(v: Seq[JsonElem])
+  extends JsonElem with JsonValue
+
+case class  JsonObject(v: Map[String, JsonElem])
+  extends JsonElem with JsonValue
+```
+
+<details>
+Since it's not directly encoded in the language, we have more flexibility.
+Use with caution
+</details>
 
 -------------------------------------------
 
-## (it's a cool lib)
+# Using ADTs
 
-# JOOQ
-
-<div style="margin-top: 200px">
-```java
-Result<Record3<String, String, String>> result =
-create.select(BOOK.TITLE, AUTHOR.FIRST_NAME, AUTHOR.LAST_NAME)
-      .from(BOOK)
-      .join(AUTHOR)
-      .on(BOOK.AUTHOR_ID.equal(AUTHOR.ID))
-      .where(BOOK.PUBLISHED_IN.equal(1948))
-      .fetch();
+<div style="margin-top: 200px;">
+```scala
+def stringify(json: JsonValue) =
+  jsonValue match {
+    case JsonNull => "null"
+    case JsonBoolean(v) => v.toString
+    …
+    case JsonArray(v) =>
+      v.map(stringify(_))
+       .mkString("[", ",", "]")
+  }
 ```
 </div>
 
 -------------------------------------------
 
-# DRY =!> ORM
+<small>
 
-<video src="http://clementd-files.cellar-c1.clvrcld.net/lol/cat-waterballoon.webm" loop></video>
+    <console>:9: warning: match may not be exhaustive.
+    It would fail on the following input: JsonString
+           def stringify(json: JsonValue) = json match {
+                                            ^
+    stringify: (json: JsonValue)String
+
+</small>
 
 <details>
-  You can stay dry without an ORM.
+Warning for non-exhaustive patterns
 </details>
 
 -------------------------------------------
 
-# Keep in control of the fetching depth
+## FP: easy to add functions
 
-<video src="http://clementd-files.cellar-c1.clvrcld.net/lol/abyss.webm" loop></video>
+-------------------------------------------
+
+## OOP: easy to add cases
+
+-------------------------------------------
+
+## Hand rolled ADT or generic types?
 
 <details>
-  With lazy loading, you can have complex queries automatically performed without joins.
-  The query depend on the code in your templates. Is your frontend dev knowledgable in DBs ?
+Use your best judgment. Concision / type safety
 </details>
 
 -------------------------------------------
 
-## Model your data with flat records
-
-<details>
-  Models representing the DB fields
-</details>
-
--------------------------------------------
-
-## Make joins explicit
-
-<details>
-  Composite objects representing joins
-</details>
-
--------------------------------------------
-
-## Now let's design great schemas
-
--------------------------------------------
-
-## Entities
-
-<details>
-  Roughly corresponds to objects
-</details>
-
--------------------------------------------
-
-## Relations
-
-<details>
-  Relations between entities
-</details>
-
--------------------------------------------
-
-# Normal Forms
-
-![](assets/academics.jpg)
-
--------------------------------------------
-
-# 1NF
-
-    The key
-
-<details>
-  Homogeneous fields. Some fields are key fields
-</details>
-
-# 2NF
-
-    The whole key
-
-<details>
-  All the non-key fields depend on all the key fields. If a field depends only
-  on a part of the key field then there is a need for a 2nd entity
-</details>
-
-
-# 3NF
-
-    Nothing but the key
-
-<details>
-  A non-key field cannot depend on another non-key field
-</details>
-
-# Boyce Codd NF
-
-    So help me Codd
-
-<details>
-  A bit stronger than 3FN: forbids redundency caused by functional dependencies
-</details>
-
--------------------------------------------
-
-## That's all well and good
-
--------------------------------------------
-
-## Let's get practical
-
--------------------------------------------
-
-# Design with Querying in mind
-
-![](assets/quest.gif)
-
--------------------------------------------
-
-### Composite entities <span class="red">can</span> be good
-
--------------------------------------------
-
-# Split data with Querying in mind
-
-<video src="http://clementd-files.cellar-c1.clvrcld.net/lol/gun-logs.webm" loop></video>
-
--------------------------------------------
-
-## Consistent naming
-
--------------------------------------------
-
-## Singular table names
-
--------------------------------------------
-
-**Uniform naming for PKs & FKs**
-
-
-    <table_name>_id
-
--------------------------------------------
-
-**Uniform naming for PKs & FKs**
-
-```sqlpostgresql
-select <fields> from
-  table_1
-  inner join table_2
-    on table_1.table_1_id =
-       table_2.table_2_id
-```
-
--------------------------------------------
-
-**Uniform naming for PKs & FKs**
-
-```sqlpostgresql
-select <fields> from
-  table_1
-  inner join table_2
-    using (table_1_id)
-```
--------------------------------------------
-
-**Uniform naming for PKs & FKs**
-
-```sqlpostgresql
-select <fields> from
-  table_1
-  natural join table_2
-```
-
--------------------------------------------
-
-## Primary Keys
-
--------------------------------------------
-
-## Use them
-
--------------------------------------------
-
-## (I shouldn't even have to say that)
-
--------------------------------------------
-
-#Use UUIDs
-
-(or random IDs)
-
-# Prevent entity enumeration
-<video src="http://clementd-files.cellar-c1.clvrcld.net/lol/hacking.webm" loop></video>
-
-# Prevent growth rate disclosure
-<video src="http://clementd-files.cellar-c1.clvrcld.net/lol/hacking.webm" loop></video>
-
-# Avoid linking the wrong table
-<video src="http://clementd-files.cellar-c1.clvrcld.net/lol/table-flip.webm" loop></video>
-
-
-# Default to not null
-![](assets/no-value.png)
-
-# Don't fear the join
-<video src="http://clementd-files.cellar-c1.clvrcld.net/lol/elephants.webm" loop></video>
-
-# Avoid deletions
-<video src="http://clementd-files.cellar-c1.clvrcld.net/lol/delete.webm" loop></video>
-
-# Avoid deletions
-
-```sqlpostgresql
-created_at
-    timestamp with time zone not null,
-deleted_at
-    timestamp with time zone
-```
-
--------------------------------------------
-
-### Don't let <span class="red">invalid</span> states be <span class="red">representable</span>
-
--------------------------------------------
-
-## Use rich types
-
--------------------------------------------
-
-## Use <span class="red">precise</span> types
-
--------------------------------------------
-
-# No more integers used as flags
-
-<video src="http://clementd-files.cellar-c1.clvrcld.net/lol/lana-nope.webm" loop></video>
-
--------------------------------------------
-
-##  4,294,967,295
-
--------------------------------------------
-
-**Use enums**
-
-```sqlpostgresql
-create type status
-as enum('pending', 'validated');
-```
-
--------------------------------------------
-
-**Use enums even when a boolean could do**
-
-```sqlpostgresql
-create type status
-as enum('pending', 'validated');
-```
-
-
--------------------------------------------
-
-## Do that in your code too
-
--------------------------------------------
-
-## Boolean Blindness
-
--------------------------------------------
-
-## Use precise types
-
--------------------------------------------
-
-## How do you store IP addresses?
-
--------------------------------------------
-
-## Moot
-
--------------------------------------------
-
-**Use precise types**
-
-    inet (IP address)
-    timestamp with time zone
-    point (2D point)
-    tstzrange (time range)
-    interval (duration)
-
--------------------------------------------
-
-**Create your own**
-
-```sqlpostgresql
-    create type my type
-    as (
-        field1 int,
-        field2 text
-    );
-```
-
--------------------------------------------
-
-## Use constraints when types are not enough
-
--------------------------------------------
-
-**Rich types => powerful constraints**
-
-```sqlpostgresql
-create table reservation(
-    reservation_id uuid primary key,
-    dates tstzrange not null,
-    exclude using gist (dates with &&)
-);
-
-```
-
--------------------------------------------
-
-**Use arrays**
-
-```sqlpostgresql
-    select '{1,2,3}'::int[]
-```
-
-# You can dump K/V data
-<video src="http://clementd-files.cellar-c1.clvrcld.net/lol/shape-toy.webm" loop></video>
-
-# Hstore
-
-```sqlpostgresql
-SELECT 'a=>1,a=>2'::hstore;
-  hstore
-----------
- "a"=>"1"
-```
-
-# You can dump JSON data
-<video src="http://clementd-files.cellar-c1.clvrcld.net/lol/shape-toy.webm" loop></video>
-
-# Json / Jsonb
-
-```sqlpostgresql
-SELECT ('{ "a": "b"}'::jsonb)->>'a' as field;
-  field
-----------
- "b"
-```
-
-# jsonb
-
- - binary json
- - indexable
- - performant
-
-
-# Structure your results 
-
-# `array_agg`
-
-```sqlpostgresql
-select
-  article.*,
-  array_agg(comment.*) as comments
-from
-  article
-  left join comment using(article_id)
-```
-
-# C2C Json
-
-```sqlpostgresql
-select
-  row_to_json(article.*) as article,
-  row_to_json(author.*) as author
-from
-  article
-  inner join author using(author_id)
-```
-
--------------------------------------------
-
-# C2C Json
+# Fun equivalences
 
 <div style="margin-top: 200px">
-```sqlpostgresql
-select
-  row_to_json(article.*) as article,
-  array_to_json(
-    array_agg(
-      row_to_json(comment.*))) as comments
-from
-  article
-  inner join author using(author_id)
+```
+a*1 <=> a
+a+0 <=> a
+
+(a*b)*c <=> a*(b*c) <=> a*b*c
+(a+b)+c <=> a+(b+c) <=> a+b+c
+
+a*(b+c) <=> (a*b)+(a*c)
+x+x+…+x <=> n*x
+
+c^(a+b) <=> c^a * c^b
 ```
 </div>
 
 -------------------------------------------
 
-**Common Table Expressions**
+## `(): Unit`
 
-```sqlpostgresql
-with sub_request as (
-    select <fields> from table1
-)
+-------------------------------------------
 
-select <fields> from sub_request;
+## `void: Void`
+
+
+-------------------------------------------
+
+# `a*1 <=> a`
+
+`(A,Unit) <=> A`
+
+-------------------------------------------
+
+# `a+0 <=> a`
+
+`A | Void <=> A`
+
+-------------------------------------------
+
+### `(a*b)*c <=>` <br> `a*(b*c) <=>`<br>`a*b*c`
+
+-------------------------------------------
+
+#`((A,B),C) <=> (A,(B,C)) <=> (A,B,C)`
+
+<details>
+Flatten tuples, case classes
+</details>
+
+-------------------------------------------
+
+### `(a+b)+c <=>`<br>`a+(b+c) <=>`<br>`a+b+c`
+
+-------------------------------------------
+
+# `(A|B) | C <=> A | (B|C) <=> A | B | C`
+
+<details>
+Flatten unions
+</details>
+
+-------------------------------------------
+
+## `a*(b+c) <=> (a*b)+(a*c)`
+
+-------------------------------------------
+
+## `(A,(B|C)) <=> (A,B)|(A|C)`
+
+<details>
+Factor out common properties
+</details>
+
+-------------------------------------------
+
+# `x+x+…+x <=> n*x`
+
+<details>
+Especially, factor out common properties and use an enum…
+or do the converse
+</details>
+
+
+-------------------------------------------
+
+## `c^(a+b) <=> c^a * c^b`
+
+-------------------------------------------
+
+###`(A|B) => C `<br>`<=>`<br>`(A=>C,B=>C)`
+
+<details>
+Case analysis: fold
+</details>
+
+-------------------------------------------
+
+# Programming with values
+
+-------------------------------------------
+
+# Programming with <span class="red">contextualized</span> values
+
+-------------------------------------------
+
+# Error handling
+
+<video src="/home/clement/Images/lol/cat-waterballoon.webm" loop></video>
+
+-------------------------------------------
+
+# Maybe
+
+<video src="/home/clement/Images/lol/call-me-maybe.webm" loop></video>
+
+-------------------------------------------
+
+# Either
+
+<video src="/home/clement/Images/lol/sharks.webm" loop></video>
+
+-------------------------------------------
+
+# Left contains the error
+
+-------------------------------------------
+
+# Right contains the expected value
+
+-------------------------------------------
+
+# Consider using scalaz.\\/
+
+-------------------------------------------
+
+# Consider using scalaz.\\/
+
+<details>Right-biased, more explicit</details>
+
+-------------------------------------------
+
+# Either and \\/ fail fast
+
+-------------------------------------------
+
+# Error accumulation
+
+-------------------------------------------
+
+# Consider using scalaz.Validation
+
+-------------------------------------------
+
+
+# Extensibility
+
+-------------------------------------------
+
+# Ad-Hoc polymorphism
+
+-------------------------------------------
+
+# But a little less Ad-Hoc
+
+-------------------------------------------
+
+# Monoid example
+
+<details>The only thing you need to know to become a big data expert</details>
+
+-------------------------------------------
+
+# Types
+
+```scala
+trait Monoid[A] {
+  def mzero: A
+  def mappend(a: A, b: A): A
+}
 ```
 
 -------------------------------------------
 
-**Window functions**
+# Laws
 
-```sqlpostgresql
-```
-
-# Shameless plug
-<video src="http://clementd-files.cellar-c1.clvrcld.net/lol/austin-omg.webm" loop></video>
-
-
-
-# jDbT
-
-<https://github.com/divarvel/jdbt>
+ - associativity
+ - left & right identity
 
 -------------------------------------------
 
-**jDbT**
+# Instances
 
-```yaml
-status:
-  - Test
-  - Prod
-
-member:
-  name: text
-  email: text
-  status: status | 'Test'
-  __unique: [ name, email ]
+```scala
+implicit val intMonoid = new Monoid[String] {
+  def mzero = ""
+  def mappend(a: String, b: String) = a + b
+}
 ```
 
 -------------------------------------------
 
-**jDbT**
+# Use
 
-```yaml
-post:
-  member_id:
-  +?title: text
-  ?content: text
-
-tag:
-    +name: text
-    __check: name <> 'forbidden'
+```scala
+def mconcat[A](elems: Seq[A])(implicit ev: Monoid[A]) = {
+  elems.foldLeft(ev.mzero)(ev.mappend _)
+}
 ```
 
 -------------------------------------------
 
-**jDbT**
+# Use
 
-```yaml
-post_tag:
-    post_id:
-    tag_id:
-    __pk: [ tag_id, post_id ]
+```scala
+def mconcat[A: Monoid](elems: Seq[A]) = {
+  val ev = implicitly[Monoid[A]]
+  elems.foldLeft(ev.mzero)(ev.mappend _)
+}
 ```
 
 -------------------------------------------
 
-**jDbT**
-
-![](assets/schema.png)
-
-# jDbT
-
-<http://jdbt-api.cleverapps.io>
+# Read scalaz code
 
 -------------------------------------------
 
-## So
+# Property-Based tests
 
 -------------------------------------------
 
-## Acknowledge the app / DB boundary
+# Laws / Discipline
 
-<details>
-  The boundary is there, trying to hide it will only result in strange shit happening at runtime
-</details>
 
 -------------------------------------------
 
-## Design your schema
 
-<details>
-  It's central to your overall design 
-</details>
+![](./assets/spark.jpg)
 
 -------------------------------------------
 
-## … with <span class="red">querying</span> in mind
-
-<details>
-  Your database is only there to be queried, don't overthink stuff that's not needed.
-</details>
+![](./assets/shapeless-spark-1.png)
 
 -------------------------------------------
 
-## (avoid ORMs)
-
-<details>
-  I don't say it out loud bc I'm always afraid of being thrown out
-  with tar and feathers.
-  Depends on what is an ORM to you
-</details>
+![](./assets/shapeless-spark-2.png)
 
 -------------------------------------------
 
-## Use precise types
-
-<details>
-  PostgreSQL provides wonderful types and is extensible.
-</details>
+```scala
+trait ToJson[A] {
+  def toJson(v: A): JsonElem
+}
+```
 
 -------------------------------------------
 
-## Denormalize responsibly
+```scala
+implicit def mapToJson[A](implicit ev: ToJson[A]) = new ToJson[Map[String, A]] {
+  def toJson(vs: Map[String, A]) = JsonObject(
+    vs.mapValues(ev.toJson _)
+  )
+}
+```
 
-<details>
-  you can have nested instances, as long as you always access the child instance through its parent, that's ok
-</details>
+-------------------------------------------
+
+# Separate effects from logic
+
+Separate decision from interpretation
+
+-------------------------------------------
+
+# Separate effects from logic
+
+Keep a (mostly) pure core, push effects to the boundaries Effects described as
+data structures can be test, acted upon, batched, sometimes reversed.
+
+-------------------------------------------
+
 
 # Thanks
 
-<video src="http://clementd-files.cellar-c1.clvrcld.net/lol/axolotl.webm" loop></video>
+<video src="/home/clement/Images/lol/axolotl.webm" loop></video>
 
 # Thanks
 
@@ -799,7 +560,7 @@ post_tag:
 -------------------------------------------
 # I'm online!
 
- - [\@clementd](https://twitter.com/clementd) on twitter
- - [cltdl.fr/blog](https://cltdl.fr/blog)
- - [clever cloud](http://clever-cloud.com)
+    - [\@clementd](https://twitter.com/clementd) on twitter
+    - [cltdl.fr/blog](https://cltdl.fr/blog)
+    - [clever cloud](http://clever-cloud.com)
 
