@@ -108,7 +108,7 @@ The control flow is data dependency
 
 -------------------------------------------
 
-# Everything<sup>\*</sup> is an expression
+# Expressions
 
 <video src="/home/clement/Images/lol/everyone.webm" loop></video>
 
