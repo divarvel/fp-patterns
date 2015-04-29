@@ -363,7 +363,7 @@ Flatten unions
 
 -------------------------------------------
 
-## `(A,(B|C)) <=> (A,B)|(A|C)`
+## `(A,(B|C)) <=> (A,B)|(A,C)`
 
 <details>
 Factor out common properties
