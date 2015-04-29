@@ -5,7 +5,7 @@
 # I'm online!
 
  - [\@clementd](https://twitter.com/clementd) on twitter
- - [cltdl.fr/blog](https://cltdl.fr/blog)
+ - [cltdl.fr/blog](http://cltdl.fr/blog)
  - [clever cloud](http://clever-cloud.com)
 
 -------------------------------------------
@@ -945,6 +945,6 @@ able to go back in time. Event sourcing's good, m'kay?
 # I'm online!
 
 - [\@clementd](https://twitter.com/clementd) on twitter
-- [cltdl.fr/blog](https://cltdl.fr/blog)
+- [cltdl.fr/blog](http://cltdl.fr/blog)
 - [clever cloud](http://clever-cloud.com)
 
