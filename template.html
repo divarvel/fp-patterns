@@ -55,6 +55,19 @@ $else$
       text-align: right;
   }
 
+  .title-slide {
+    background-image: url(./assets/title-geecon.jpg);
+    background-size: 800px 600px;
+  }
+
+  .title-slide .red {
+      color: white;
+  }
+
+  .title-slide .title {
+      /*font-size: 0.9em;*/
+  }
+
 
   /* Transition effect */
   section {
@@ -112,11 +125,16 @@ $else$
       top: 50px;
       padding-top: 0px;
   }
-  .author { color: #000; }
-  .date {color: #000; }
+  .author, .date {
+      color: #000;
+      text-align: right;
+      margin: 0;
+  }
   footer {
+      text-align: right;
       position: absolute;
-      bottom: 50px;
+      bottom: 0px;
+      right: 5px;
   }
   ul {
       margin-top: 250px;
@@ -226,7 +244,7 @@ $endfor$
 <div class="after">
 </div>
 $if(title)$
-<section>
+<section class="title-slide">
   <h1 class="title">$title$</h1>
   <footer>
 $for(author)$

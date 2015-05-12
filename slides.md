@@ -1,6 +1,6 @@
-% Functional patterns for Scala <span class="red">beginners</span>
+% Functional patterns for <br/> Scala <span class="red">beginners</span>
 % Clément Delafargue
-% flatMap(Oslo) 2015-04-28
+% 2015-05-13
 
 # I'm online!
 
@@ -585,6 +585,12 @@ def validateEmail(value: String):
 }
 ```
 </div>
+
+-------------------------------------------
+
+# NonEmptyList
+
+![](./assets/error-no-error.png)
 
 -------------------------------------------
 
