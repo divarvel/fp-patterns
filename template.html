@@ -55,17 +55,24 @@ $else$
       text-align: right;
   }
 
-  .title-slide {
-    background-image: url(./assets/title-geecon.jpg);
-    background-size: 800px 600px;
+  .title-slide img {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
   }
 
   .title-slide .red {
-      color: white;
+    color: white;
   }
 
   .title-slide .title {
-      /*font-size: 0.9em;*/
+     margin-top: 90px;
+     margin-left: 10px;
+     font-size: 1.1em;
+     width: 254px;
+     text-align: left;
+     line-height: 1.4em;
   }
 
 
@@ -126,9 +133,10 @@ $else$
       padding-top: 0px;
   }
   .author, .date {
-      color: #000;
+      color: #fff;
       text-align: right;
       margin: 0;
+      font-size: 0.8em;
   }
   footer {
       text-align: right;
@@ -228,6 +236,11 @@ $else$
       font-size: 1.5em;
   }
 
+  h1+pre {
+    position: absolute;
+    bottom: 10px;
+  }
+
 </style>
 $endif$
 $if(math)$
@@ -245,12 +258,12 @@ $endfor$
 </div>
 $if(title)$
 <section class="title-slide">
+  <img src="./assets/title.png">
   <h1 class="title">$title$</h1>
   <footer>
 $for(author)$
-  <h2 class="author">$author$</h2>
+  <h2 class="author">$author$ - @clementd</h2>
 $endfor$
-  <h3 class="date">$date$</h3>
   </footer>
 </section>
 $endif$
@@ -262,5 +275,12 @@ $for(include-after)$
 $include-after$
 $endfor$
 $dzslides-core$
+
+<style>
+    body.loaded {
+     height: 450px;
+     margin-top: -225px;
+   }
+</style>
 </body>
 </html>

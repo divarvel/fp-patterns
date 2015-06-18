@@ -1,6 +1,6 @@
 % Functional patterns for <br/> Scala <span class="red">beginners</span>
 % Clément Delafargue
-% 2015-05-13
+% 2015-06-18
 
 # I'm online!
 
@@ -56,6 +56,15 @@ but bases used to build upon
 
 -------------------------------------------
 
+# No swagoid yolomorphisms today
+
+-------------------------------------------
+
+# Tools they're built upon
+
+-------------------------------------------
+
+
 <video src="/home/clement/Images/lol/how-we-do.webm" loop></video>
 
 <details>
@@ -109,8 +118,6 @@ The control flow is data dependency
 -------------------------------------------
 
 # Expressions
-
-<video src="/home/clement/Images/lol/everyone.webm" loop></video>
 
 -------------------------------------------
 
@@ -171,6 +178,40 @@ Cartesian product
 
 -------------------------------------------
 
+# Construction
+
+```scala
+val c = ("Clément", 26)
+
+case class User(name: String, age: Int)
+val cc = User("Clément", 26)
+```
+
+-------------------------------------------
+
+# Elimination
+
+```scala
+val (name, age) = ("Clément", 26)
+
+val User(name, age) = User("Clément", 26)
+```
+
+-------------------------------------------
+
+# Product
+
+```scala
+// 2 * 2 = 4
+(true, true)
+(true, false)
+(false, true)
+(false, false)
+```
+
+-------------------------------------------
+
+
 ## Sum
 
 <details>
@@ -180,7 +221,12 @@ Closed
 
 -------------------------------------------
 
+![](./assets/json.png)
+
+-------------------------------------------
+
 # In Haskell
+
 
 ```haskell
 data JsonElem = JsonNull
@@ -223,26 +269,6 @@ case class  JsonObject(v: Map[String, JsonElem])
 -------------------------------------------
 
 ```scala
-case class
-  JsonArray(v: Seq[JsonElem])
-  extends JsonElem with JsonValue
-
-case class
-  JsonObject(v: Map[String, JsonElem])
-  extends JsonElem with JsonValue
-```
-
-<details>
-Since it's not directly encoded in the language, we have more flexibility.
-Use with caution
-</details>
-
--------------------------------------------
-
-# Using ADTs
-
-<div style="margin-top: 200px;">
-```scala
 def stringify(json: JsonValue) =
   jsonValue match {
     case JsonNull => "null"
@@ -253,7 +279,6 @@ def stringify(json: JsonValue) =
        .mkString("[", ",", "]")
   }
 ```
-</div>
 
 -------------------------------------------
 
@@ -273,11 +298,40 @@ Warning for non-exhaustive patterns
 
 -------------------------------------------
 
-## FP: easy to add functions
+## Scala niceties
+
+-------------------------------------------
+
+```scala
+case class
+  JsonArray(v: Seq[JsonElem])
+  extends JsonElem with JsonValue
+
+case class
+  JsonObject(v: Map[String, JsonElem])
+  extends JsonElem with JsonValue
+```
+
+<details>
+Since it's not directly encoded in the language, we have more flexibility.
+Use with caution
+</details>
+
+-------------------------------------------
+
+## OOP: methods on classes
+
+-------------------------------------------
+
+## ADTs: pattern matching
 
 -------------------------------------------
 
 ## OOP: easy to add cases
+
+-------------------------------------------
+
+## FP: easy to add functions
 
 -------------------------------------------
 
@@ -289,9 +343,30 @@ Use your best judgment. Concision / type safety
 
 -------------------------------------------
 
-# Fun equivalences
+```scala
+("Clément", 26)
 
-<video src="/home/clement/Images/lol/math.webm" loop></video>
+User(name = "Clément", age = 26)
+```
+
+-------------------------------------------
+
+```scala
+val v: Either[String, Int] =
+  Left("error")
+
+sealed trait MyEither
+
+case class MyLeft(v: String)
+  extends MyEither
+
+case class MyRight(v: Int)
+  extends MyEither
+```
+
+-------------------------------------------
+
+# Sum / Product <br><br> + / *
 
 -------------------------------------------
 
@@ -301,13 +376,25 @@ Use your best judgment. Concision / type safety
 ```
 a*1 <=> a
 a+0 <=> a
+```
+</div>
 
+# Fun equivalences
+
+<div style="margin-top: 200px">
+```
 (a*b)*c <=> a*(b*c) <=> a*b*c
 (a+b)+c <=> a+(b+c) <=> a+b+c
 
 a*(b+c) <=> (a*b)+(a*c)
 x+x+…+x <=> n*x
+```
+</div>
 
+# Fun equivalences
+
+<div style="margin-top: 200px">
+```
 c^(a+b) <=> c^a * c^b
 ```
 </div>
@@ -335,11 +422,21 @@ c^(a+b) <=> c^a * c^b
 
 -------------------------------------------
 
-### `(a*b)*c <=>` <br> `a*(b*c) <=>`<br>`a*b*c`
+### `(a*b)*c <=>` <br> `a*(b*c)`
 
 -------------------------------------------
 
-#`((A,B),C) <=> (A,(B,C)) <=> (A,B,C)`
+### `a*b*c`
+
+-------------------------------------------
+
+```scala
+(("Clément", 26), "Éol")
+
+("Clément", (26, "Éol))
+
+("Clément", 26, "Éol")
+```
 
 <details>
 Flatten tuples, case classes
@@ -347,11 +444,48 @@ Flatten tuples, case classes
 
 -------------------------------------------
 
-### `(a+b)+c <=>`<br>`a+(b+c) <=>`<br>`a+b+c`
+```scala
+(User("Clément", 26), Pet("Éol"))
+
+
+UserWithPet("Clément", 26, "Éol")
+```
+
+<details>
+Flatten tuples, case classes
+</details>
 
 -------------------------------------------
 
-# `(A|B) | C <=> A | (B|C) <=> A | B | C`
+### `(a+b)+c <=>`<br>`a+(b+c)`
+
+-------------------------------------------
+
+### `a+b+c`
+
+-------------------------------------------
+
+```scala
+c match {
+  case Left(a)         => "Left " + a
+  case Right(Left(a))  => "Middle " + a
+  case Right(Right(a)) => "Right " + a
+}
+```
+
+<details>
+Flatten unions
+</details>
+
+-------------------------------------------
+
+```scala
+c match {
+  case Left(a)   => "Left " + a
+  case Middle(a) => "Middle " + a
+  case Right(a)  => "Right " + a
+}
+```
 
 <details>
 Flatten unions
@@ -363,7 +497,14 @@ Flatten unions
 
 -------------------------------------------
 
-## `(A,(B|C)) <=> (A,B)|(A,C)`
+```scala
+("X", Left("Y"))
+("X", Right(42))
+
+Left(("X", "Y"))
+Right(("X", 42))
+
+```
 
 <details>
 Factor out common properties
@@ -372,6 +513,17 @@ Factor out common properties
 -------------------------------------------
 
 # `x+x+…+x <=> n*x`
+
+-------------------------------------------
+
+```scala
+sealed trait X
+case class Bad(v: String) extends X
+case class Good(v: String) extends X
+
+case class Y(v: String, isGood: Bool)
+```
+
 
 <details>
 Especially, factor out common properties and use an enum…
@@ -385,7 +537,8 @@ or do the converse
 
 -------------------------------------------
 
-###`(A|B) => C `<br>`<=>`<br>`(A=>C,B=>C)`
+## Case analysis
+
 
 <details>
 Case analysis: fold
@@ -399,11 +552,9 @@ Case analysis: fold
 
 # Avoid booleans
 
-<video src="/home/clement/Images/lol/cat-bath.webm" loop></video>
-
 -------------------------------------------
 
-# Programming with values
+# Programming with <br><br>values
 
 -------------------------------------------
 
@@ -419,17 +570,21 @@ Case analysis: fold
 
 # Option
 
+-------------------------------------------
+
+# Call it maybe
+
 <video src="/home/clement/Images/lol/call-me-maybe.webm" loop></video>
 
 -------------------------------------------
 
-# Only one thing can go wrong
-
-<video src="/home/clement/Images/lol/unicycle-grind.webm" loop></video>
+## Only one thing can go wrong
 
 -------------------------------------------
 
 # Either
+
+-------------------------------------------
 
 <video src="/home/clement/Images/lol/sharks.webm" loop></video>
 
@@ -453,11 +608,37 @@ Case analysis: fold
 
 # <small>`Either[String, A]`</small>
 
+-------------------------------------------
+
 <video src="/home/clement/Images/lol/cat-poop.webm" loop></video>
 
 -------------------------------------------
 
-# Not biased
+```scala
+sealed trait InputError
+
+case class MissingUsername
+  extends InputError
+
+case class InvalidEmail
+  extends InputError
+```
+
+-------------------------------------------
+
+```scala
+val a: Either[InputError, User] = ???
+
+a match {
+  case Right(user) => ???
+  case Left(MissingUsername) => ???
+  case Left(InvalidEmail) => ???
+}
+```
+
+-------------------------------------------
+
+# Either: not biased
 
 ```scala
 for {
@@ -469,7 +650,7 @@ for {
 
 -------------------------------------------
 
-# Not biased
+# Either: not biased
 
 
     res8: scala.util.Either[String,String] =
@@ -477,6 +658,9 @@ for {
 
 -------------------------------------------
 
+# Inference issues
+
+<div style="margin-top: 200px">
 <small>
 <small>
 <small>
@@ -491,6 +675,7 @@ scala> Option("test").fold(Left("error"))(Right.apply)
 </small>
 </small>
 </small>
+</div>
 
 -------------------------------------------
 
@@ -507,10 +692,6 @@ res1:
 -------------------------------------------
 
 ## Consider using scalaz.\\/
-
--------------------------------------------
-
-<video src="/home/clement/Images/lol/flexcam.webm" loop></video>
 
 -------------------------------------------
 
@@ -567,8 +748,6 @@ res16: scalaz.\/[String,String] =
 -------------------------------------------
 
 # Consider using scalaz.Validation
-
-<video src="/home/clement/Images/lol/i-approve.webm" loop></video>
 
 -------------------------------------------
 
@@ -639,15 +818,7 @@ val user = (
 
 -------------------------------------------
 
-# scalaz.Validation
-
-```
-    Success(User(email, username))
-```
-
--------------------------------------------
-
-## Don't necessarily flatten your errors
+## Don't always flatten your errors
 
 -------------------------------------------
 
@@ -655,7 +826,9 @@ val user = (
 
 <video src="/home/clement/Images/lol/octocat.webm" loop></video>
 
-![](/home/clement/Images/lol/carrie.jpg)
+-------------------------------------------
+
+## Ad-Hoc polymorphism
 
 -------------------------------------------
 
@@ -677,7 +850,58 @@ val user = (
 
 -------------------------------------------
 
-# Types
+# Combine 2 values
+
+(associatively)
+
+-------------------------------------------
+
+# Neutral element
+
+(left & right identity)
+
+-------------------------------------------
+
+# First try
+
+```scala
+trait Monoid {
+  def combine(o: Monoid): Monoid
+}
+```
+
+-------------------------------------------
+
+# First try
+
+```scala
+class MyClass extends Monoid {
+  def combine(o: Monoid) = ???
+}
+```
+
+-------------------------------------------
+
+# Information Loss
+
+-------------------------------------------
+
+# Can't add behaviour to final classes
+
+-------------------------------------------
+
+# How to encode `zero`?
+
+-------------------------------------------
+
+# External declaration
+
+
+# External declaration
+
+-------------------------------------------
+
+# Declare behaviour
 
 ```scala
 trait Monoid[A] {
@@ -688,47 +912,61 @@ trait Monoid[A] {
 
 -------------------------------------------
 
-# Laws
-
- - associativity
- - left & right identity
+## No problem with final types
 
 -------------------------------------------
 
-# Laws
-
-`a <> (b <> c)` <br>
-`<=>` <br>
-`(a <> b) <> c`
+## No information loss
 
 -------------------------------------------
 
-# Laws
-
-`a <> mempty` <br>
-`<=>`
-`a`
-
--------------------------------------------
-
-# Laws
-
-`mempty <> a` <br>
-`<=>`
-`a`
-
--------------------------------------------
-
-# Lawless typeclasses: beware
-
-<video src="/home/clement/Images/lol/armpit-smell.webm" loop></video>
-
--------------------------------------------
-
-# Instances
+# Implement it
 
 ```scala
-implicit val intMonoid =
+val stringMonoid = new Monoid[String] {
+  def mzero = ""
+  def mappend(a: String, b: String) =
+    a + b
+}
+```
+
+-------------------------------------------
+
+# Use it
+
+```scala
+def mconcat[A]
+  (elems: Seq[A])
+  (ev: Monoid[A]) = {
+
+  elems.foldLeft(ev.mzero)(ev.mappend)
+
+}
+```
+
+-------------------------------------------
+
+```scala
+mconcat(Seq("1", "2", "3"))(stringMonoid)
+// "123"
+
+mconcat(Seq(1, 2, 3, 4))(addIntMonoid)
+// 10
+
+mconcat(Seq(1, 2, 3, 4))(multIntMonoid)
+// 24
+```
+
+-------------------------------------------
+
+## Automatic wiring
+
+-------------------------------------------
+
+# Implement it
+
+```scala
+implicit val stringMonoid =
 new Monoid[String] {
   def mzero = ""
   def mappend(a: String, b: String) =
@@ -738,19 +976,21 @@ new Monoid[String] {
 
 -------------------------------------------
 
-# Use
+# Use it
 
 ```scala
 def mconcat[A]
   (elems: Seq[A])
   (implicit ev: Monoid[A]) = {
+
   elems.foldLeft(ev.mzero)(ev.mappend)
+
 }
 ```
 
 -------------------------------------------
 
-# Use
+# Use it
 
 ```scala
 def mconcat[A: Monoid](elems: Seq[A]) = {
@@ -758,6 +998,26 @@ def mconcat[A: Monoid](elems: Seq[A]) = {
   elems.foldLeft(ev.mzero)(ev.mappend)
 }
 ```
+
+-------------------------------------------
+
+# Use it
+
+```scala
+mconcat(Seq("1", "2", "3"))
+// "123"
+
+mconcat(Seq(1, 2, 3))
+// ???
+```
+
+-------------------------------------------
+
+# Typeclasse convergence
+
+-------------------------------------------
+
+# Serialization
 
 -------------------------------------------
 
@@ -885,6 +1145,29 @@ data structures can be test, acted upon, batched, sometimes reversed.
 
 -------------------------------------------
 
+```scala
+case class AddUser(user: User)
+
+case class TransferAmount(
+  to: User,
+  from: User,
+  amount: Money)
+```
+
+-------------------------------------------
+
+## Declare actions / effects
+
+-------------------------------------------
+
+# Interpret them "at the end of the world"
+
+-------------------------------------------
+
+<video src="/home/clement/Images/lol/but-why.webm" loop></video>
+
+-------------------------------------------
+
 ## Testability
 
 <details>
@@ -894,9 +1177,8 @@ the effects
 
 -------------------------------------------
 
-# Flexibility
+## Flexibility
 
-<video src="/home/clement/Images/lol/matrix_fight.webm" loop></video>
 
 <details>
 Batch, deduplicate, compress. Persist the effects description directly to be
@@ -908,6 +1190,10 @@ able to go back in time. Event sourcing's good, m'kay?
 # Go back in time
 
 <video src="/home/clement/Images/lol/allons-y.webm" loop></video>
+
+-------------------------------------------
+
+## Recap
 
 -------------------------------------------
 
@@ -946,6 +1232,16 @@ able to go back in time. Event sourcing's good, m'kay?
 # Thanks
 
 ## <http://cltdl.fr/gifs>
+
+-------------------------------------------
+
+# <small><small>Give Clever Cloud a try!</small></small>
+
+
+`extraordinary15`
+
+<!-- devoxxplroxx -->
+
 
 -------------------------------------------
 # I'm online!
