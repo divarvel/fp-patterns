@@ -1,6 +1,6 @@
-% Functional patterns for <br/> Scala <span class="red">beginners</span>
+% Functional patterns for  Scala <span class="red">beginners</span>
 % Clément Delafargue
-% 2015-06-18
+% 2015-06-22
 
 # I'm online!
 
@@ -1238,10 +1238,7 @@ able to go back in time. Event sourcing's good, m'kay?
 # <small><small>Give Clever Cloud a try!</small></small>
 
 
-`extraordinary15`
-
-<!-- devoxxplroxx -->
-
+`devoxxplroxx`
 
 -------------------------------------------
 # I'm online!

@@ -63,14 +63,12 @@ $else$
   }
 
   .title-slide .red {
-    color: white;
+    color: black;
   }
 
   .title-slide .title {
      margin-top: 90px;
      margin-left: 10px;
-     font-size: 1.1em;
-     width: 254px;
      text-align: left;
      line-height: 1.4em;
   }
@@ -125,25 +123,33 @@ $else$
       font-size: 30px;
       text-align: left;
   }
+
   h1.title {
       color: #000;
-      font-size: 3em;
+      font-size: 2em;
       position: absolute;
       top: 50px;
+      left: 90px;
       padding-top: 0px;
   }
-  .author, .date {
-      color: #fff;
-      text-align: right;
+
+  .author {
+      color: #000;
       margin: 0;
-      font-size: 0.8em;
-  }
-  footer {
-      text-align: right;
+      font-size: 0.9em;
       position: absolute;
-      bottom: 0px;
-      right: 5px;
+      top: -150px;
+      left: -150px;
   }
+
+  .twitter {
+    text-align: right;
+    font-size: 0.7em;
+    position: absolute;
+    bottom: -47px;
+    right: -45px;
+  }
+
   ul {
       margin-top: 250px;
       font-size: 60px;
@@ -258,12 +264,13 @@ $endfor$
 </div>
 $if(title)$
 <section class="title-slide">
-  <img src="./assets/title.png">
+  <img src="./assets/title-devoxx-pl.jpg">
   <h1 class="title">$title$</h1>
   <footer>
 $for(author)$
-  <h2 class="author">$author$ - @clementd</h2>
+  <div class="author">$author$</div>
 $endfor$
+  <div class="twitter">@clementd</div>
   </footer>
 </section>
 $endif$
