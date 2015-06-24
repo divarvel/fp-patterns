@@ -1013,7 +1013,7 @@ mconcat(Seq(1, 2, 3))
 
 -------------------------------------------
 
-# Typeclasse convergence
+# Typeclass convergence
 
 -------------------------------------------
 
