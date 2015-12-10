@@ -1,6 +1,6 @@
 % Functional patterns for  Scala <span class="red">beginners</span>
 % Clément Delafargue
-% 2015-06-22
+% 2015-12-10
 
 # I'm online!
 
@@ -1017,6 +1017,16 @@ mconcat(Seq(1, 2, 3))
 
 -------------------------------------------
 
+```scala
+import simulacrum._
+
+@typeclass trait Semigroup[A] {
+  @op("|+|") def append(x: A, y: A): A
+}
+```
+
+-------------------------------------------
+
 # Serialization
 
 -------------------------------------------
@@ -1077,7 +1087,7 @@ implicit def mapToJson[A: ToJson]() =
 
 -------------------------------------------
 
-# Read scalaz code
+# Read cats code
 
 <video src="/home/clement/Images/lol/twilight_reading.webm" loop></video>
 
@@ -1238,7 +1248,7 @@ able to go back in time. Event sourcing's good, m'kay?
 # <small><small>Give Clever Cloud a try!</small></small>
 
 
-`devoxxplroxx`
+`scalaexchange`
 
 -------------------------------------------
 # I'm online!
