@@ -606,7 +606,7 @@ Case analysis: fold
 
 -------------------------------------------
 
-<video src="/home/clement/Images/lol/cat-poop.webm" loop></video>
+<video src="/home/clement/Images/lol/dog-smell.webm" loop></video>
 
 -------------------------------------------
 
@@ -687,17 +687,17 @@ res1:
 ```
 -------------------------------------------
 
-## Consider using scalaz.\\/
+## Consider using cats.Xor
 
 -------------------------------------------
 
-# scalaz.\\/
+# `cats.Xor`
 
 ```scala
 for {
-  a <- \/.right("ok")
-  b <- \/.left("error 1")
-  c <- \/.left("error 2")
+  a <- "ok".right
+  b <- "error 1".left
+  c <- "error 2".left
 } yield c
 ```
 
@@ -705,16 +705,16 @@ for {
 
 -------------------------------------------
 
-# scalaz.\\/
+# `cats.Xor`
 
 ```scala
-res16: scalaz.\/[String,String] =
-    -\/(error 1)
+res16: cats.Xor[String,String] =
+    Left(error 1)
 ```
 
 -------------------------------------------
 
-# Either and \\/ fail fast
+# Either and Xor fail fast
 
 <video src="/home/clement/Images/lol/plane-fail.webm" loop></video>
 
@@ -743,20 +743,20 @@ res16: scalaz.\/[String,String] =
 
 -------------------------------------------
 
-# Consider using scalaz.Validation
+# Consider using cats.Validated
 
 -------------------------------------------
 
-# scalaz.Validation
+# cats.Validated
 
 <div style="margin-top: 200px">
 ```scala
 def validateEmail(value: String):
-  ValidationNel[String, String] = {
+  ValidatedNel[String, String] = {
 
-    value.successNel[String]
+    value.validNel
     // or
-    "error".failNel[String]
+    "error".invalidNel
 }
 ```
 </div>
@@ -769,7 +769,7 @@ def validateEmail(value: String):
 
 -------------------------------------------
 
-# scalaz.Validation
+# cats.Validated
 
 <div style="margin-top: 200px">
 ```scala
@@ -788,7 +788,7 @@ val user = (
 # scalaz.Validation
 
 ```scala
-    Success(User(email, username))
+    Valid(User(email, username))
 ```
 
 -------------------------------------------
@@ -796,17 +796,17 @@ val user = (
 # scalaz.Validation
 
 ```
-    Failure(
+    Invalid(
       NonEmptyList(
         "invalid username"))
 ```
 
 -------------------------------------------
 
-# scalaz.Validation
+# cats.Validated
 
 ```
-    Failure(
+    Valid(
       NonEmptyList(
         "invalid email",
         "invalid username"))
@@ -1013,6 +1013,10 @@ mconcat(Seq(1, 2, 3))
 
 -------------------------------------------
 
+# Lawless Typeclasses
+
+-------------------------------------------
+
 ```scala
 import simulacrum._
 
@@ -1024,10 +1028,6 @@ import simulacrum._
 -------------------------------------------
 
 # Serialization
-
--------------------------------------------
-
-![](./assets/spark.jpg)
 
 -------------------------------------------
 
