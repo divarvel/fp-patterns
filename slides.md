@@ -10,10 +10,6 @@
 
 -------------------------------------------
 
-![](assets/clever.png)
-
--------------------------------------------
-
 <p style="text-align:center">
 <br><br>
 <span style="font-size: 5.5em;">λ</span>
@@ -1100,7 +1096,7 @@ implicit def mapToJson[A: ToJson]() =
 -------------------------------------------
 
 <p style="text-align: center">
-<span style="font-size: 5.5em;">∃</span>
+<span style="font-size: 5em;">∃</span>
 </p>
 
 <p style="text-align: center">
@@ -1112,7 +1108,7 @@ implicit def mapToJson[A: ToJson]() =
 -------------------------------------------
 
 <p style="text-align: center">
-<span style="font-size: 5.5em;">∀</span>
+<span style="font-size: 5em;">∀</span>
 </p>
 
 <p style="text-align: center">
@@ -1248,7 +1244,7 @@ able to go back in time. Event sourcing's good, m'kay?
 # <small><small>Give Clever Cloud a try!</small></small>
 
 
-`scalaexchange`
+<div style="text-align:center; margin-top: 8em;">`scalaio2016`</div>
 
 -------------------------------------------
 # I'm online!
