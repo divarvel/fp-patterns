@@ -714,6 +714,30 @@ res16: cats.Xor[String,String] =
 
 -------------------------------------------
 
+# scala 2.12 yay \\o/
+
+```scala
+for {
+  a <- Left("error")
+  b <- Right(a)
+} yield b
+```
+
+-------------------------------------------
+
+# scala 2.12 yay \\o/
+
+```scala
+scala> Option("test").toRight("error")
+res10: scala.util.Either[String,String] = Right(test)
+```
+
+-------------------------------------------
+
+# Xor will be retired
+
+-------------------------------------------
+
 # Either and Xor fail fast
 
 <video src="/home/clement/Images/lol/plane-fail.webm" loop></video>
