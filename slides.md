@@ -1,4 +1,4 @@
-% Functional patterns for  Scala <span class="red">beginners</span>
+% Functional patterns for  Scala <span class="red">practionners</span>
 % Clément Delafargue
 % 2015-12-10
 
