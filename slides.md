@@ -1268,7 +1268,7 @@ able to go back in time. Event sourcing's good, m'kay?
 # <small><small>Give Clever Cloud a try!</small></small>
 
 
-<div style="text-align:center; margin-top: 8em;">`scalaio2016`</div>
+<div style="text-align:center; margin-top: 8em;">`devoxxroxx2016`</div>
 
 -------------------------------------------
 # I'm online!
